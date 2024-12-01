@@ -1,6 +1,7 @@
 import os
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+from typing import Final
 
 
 class BatchObfuscator:
@@ -8,15 +9,14 @@ class BatchObfuscator:
     A class to handle the obfuscation of batch (.bat) files by adding specific bytes to the beginning of the file.
     """
 
-    path = str
-    new_bytes = b"\xFF\xFE\x0D\x0A"
+    __new_bytes: Final[bytes] = b"\xFF\xFE\x0D\x0A"
 
-    def __get_file_path(self) -> path:
+    def __get_file_path(self) -> str:
         """
         Opens a file dialog for the user to select a file.
 
         Returns:
-            path: The path to the selected file as a string.
+            str: The path to the selected file as a string.
         """
 
         Tk().withdraw()
@@ -59,7 +59,7 @@ class BatchObfuscator:
                 original_bytes = f.read()
 
             with open(new_file, "wb") as f:
-                f.write(self.new_bytes + original_bytes)
+                f.write(self.__new_bytes + original_bytes)
 
         except Exception as e:
             raise Exception(f"Error obfuscating file: {e}")
